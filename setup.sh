@@ -37,6 +37,7 @@ echo "Shake mouse pointer to locate feature disabled."
 echo "Preferences set."
 echo "Clearing the Dock..."
 defaults write com.apple.dock persistent-apps -array ""
+defaults write com.apple.dock autohide -bool true
 killall Dock
 echo "Dock cleared."
 
