@@ -62,11 +62,24 @@ brew install --cask slack
 brew install --cask visual-studio-code
 brew install --cask chatgpt
 brew install --cask nikitabobko/tap/aerospace
+brew install --cask cursor
+brew install --cask spotify
+brew install --cask unity-hub
+brew install --cask figma
+brew install --cask discord
 
 echo "Installing apps with Homebrew..."
 
+brew install neovim
 brew install defaultbrowser
 brew install chezmoi
+brew install uv
+brew install node
+brew install cloudflared
+brew install stripe/stripe-cli/stripe
+brew install treethis
+brew install pip
+brew install go
 
 echo "Setup dotfiles"
 
@@ -88,8 +101,14 @@ fi
 
 echo "Installing VS Code extensions..."
 
-# Install RooCode extension
 code --install-extension RooVeterinaryInc.roo-cline
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension esbenp.prettier-vscode
+code --install-extension bradlc.vscode-tailwindcss
+code --install-extension christian-kohler.path-intellisense
+code --install-extension formulahendry.auto-rename-tag
+code --install-extension mikestead.dotenv
+code --install-extension openai.chatgpt
 
 echo "Setting Firefox as the default browser..."
 defaultbrowser firefox
@@ -105,4 +124,23 @@ else
 fi
 echo "Node.js installation complete."
 
+echo "Installing pnpm globally..."
+npm install -g pnpm
+echo "pnpm installation complete."
+
+npm install -g @openai/codex
+
+echo "Installing bun..."
+# Install bun
+curl -fsSL https://bun.sh/install | bash
+# Add bun to PATH for future sessions in .zprofile
+if ! grep -qxF 'export PATH="$HOME/.bun/bin:$PATH"' "$HOME/.zprofile"; then
+  echo '# Add bun to PATH' >> "$HOME/.zprofile"
+  echo 'export PATH="$HOME/.bun/bin:$PATH"' >> "$HOME/.zprofile"
+fi
+echo "bun installation complete."
+
 echo "🎉 Setup complete!"
+
+echo "Sourcing .zprofile to apply environment changes..."
+source "$HOME/.zprofile"
