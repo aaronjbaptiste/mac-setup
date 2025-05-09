@@ -67,6 +67,8 @@ brew install --cask spotify
 brew install --cask unity-hub
 brew install --cask figma
 brew install --cask discord
+brew install --cask google-chrome
+brew install --cask ghostty
 
 echo "Installing apps with Homebrew..."
 
