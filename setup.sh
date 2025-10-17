@@ -26,14 +26,15 @@ defaults write NSGlobalDomain com.apple.mouse.linear -bool YES
 # Disable shake mouse pointer to locate
 echo "Disabling shake mouse pointer to locate feature..."
 defaults write -g CGDisableCursorLocationMagnification -bool true
-
-# Always show Sound in menu bar
-defaults -currentHost write com.apple.controlcenter "Sound" -int 18
-killall ControlCenter 2>/dev/null
-killall SystemUIServer 2>/dev/null
-
 echo "Shake mouse pointer to locate feature disabled."
 
+# Disable input source switching with fn key
+echo "Disabling input source switching with fn key..."
+defaults write com.apple.HIToolbox AppleFnUsageType -int 0
+killall SystemUIServer
+echo "Input source switching with fn key disabled."
+
+# Dock settings
 echo "Preferences set."
 echo "Clearing the Dock..."
 defaults write com.apple.dock persistent-apps -array ""
@@ -44,10 +45,10 @@ echo "Dock cleared."
 echo "Installing Homebrew..."
 
 # Install Homebrew if not already installed
-if ! command -v brew &> /dev/null; then
+if ! command -v brew &>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   if ! grep -qxF 'eval "$(/opt/homebrew/bin/brew shellenv)"' "$HOME/.zprofile"; then
-    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>"$HOME/.zprofile"
   fi
   eval "$(/opt/homebrew/bin/brew shellenv)"
 else
@@ -56,93 +57,101 @@ fi
 
 echo "Installing apps with Homebrew Cask..."
 
-brew install --cask firefox
 brew install --cask 1password
-brew install --cask slack
-brew install --cask visual-studio-code
+brew install --cask zed
 brew install --cask chatgpt
 brew install --cask nikitabobko/tap/aerospace
-brew install --cask cursor
 brew install --cask spotify
-brew install --cask unity-hub
 brew install --cask figma
 brew install --cask discord
-brew install --cask google-chrome
+brew install --cask zen
 brew install --cask ghostty
+brew install --cask raycast
 
 echo "Installing apps with Homebrew..."
 
-brew install neovim
+brew install fish
 brew install defaultbrowser
-brew install chezmoi
-brew install uv
-brew install node
-brew install cloudflared
-brew install stripe/stripe-cli/stripe
-brew install treethis
-brew install pip
-brew install go
+
+# brew install ripgrep
+# brew install defaultbrowser
+# brew install chezmoi
+# brew install uv
+# brew install node
+# brew install cloudflared
+# brew install git-filter-repo
+# brew install stripe/stripe-cli/stripe
+# brew install treethis
+# brew install pip
+# brew install go
+# brew install git-lfs
+# brew install git
+# brew install tmux
+# brew install starship
+# brew install flyctl
+# brew install peco
+# brew install eza
+# brew install gh
+# brew install fd
+# brew tap FelixKratz/formulae
+# brew install borders
 
 echo "Setup dotfiles"
 
+# Add fish to list of known shells
+sudo bash -c 'echo $(which fish) >> /etc/shells'
+# Set fish as default shell
+chsh -s $(which fish)
+
+# Install fisher
+# curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+
+# # Install fisher plugins
+# fisher install jethrokuan/z
+
 # Initialize and apply dotfiles with chezmoi
-chezmoi init --apply aaronjbaptiste
+# chezmoi init --apply aaronjbaptiste
 
 # Update chezmoi git remote URL
-cd /Users/aaron/.local/share/chezmoi
-git remote set-url origin aarongit:aaronjbaptiste/dotfiles.git
-cd ~
+# cd /Users/aaron/.local/share/chezmoi
+# git remote set-url origin aarongit:aaronjbaptiste/dotfiles.git
+# cd ~
 
-# Add VS Code to PATH for CLI use
-if [ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]; then
-  export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-  if ! grep -qxF 'export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"' "$HOME/.zprofile"; then
-    echo 'export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"' >> "$HOME/.zprofile"
-  fi
-fi
-
-echo "Installing VS Code extensions..."
-
-code --install-extension RooVeterinaryInc.roo-cline
-code --install-extension dbaeumer.vscode-eslint
-code --install-extension esbenp.prettier-vscode
-code --install-extension bradlc.vscode-tailwindcss
-code --install-extension christian-kohler.path-intellisense
-code --install-extension formulahendry.auto-rename-tag
-code --install-extension mikestead.dotenv
-code --install-extension openai.chatgpt
-
-echo "Setting Firefox as the default browser..."
-defaultbrowser firefox
-echo "Default browser set to Firefox."
+echo "Setting Zen as the default browser..."
+defaultbrowser zen
+echo "Default browser set to Zen."
 
 echo "All apps installed."
 
-echo "Installing Node.js with Homebrew..."
-if ! command -v node &> /dev/null; then
-  brew install node
-else
-  echo "Node.js already installed, skipping..."
-fi
-echo "Node.js installation complete."
+# npm install -g @openai/codex
 
-echo "Installing pnpm globally..."
-npm install -g pnpm
-echo "pnpm installation complete."
+# echo "Installing bun..."
+# curl -fsSL https://bun.sh/install | bash
+# # Add bun to PATH for future sessions in .zprofile
+# if ! grep -qxF 'export PATH="$HOME/.bun/bin:$PATH"' "$HOME/.zprofile"; then
+#   echo '# Add bun to PATH' >>"$HOME/.zprofile"
+#   echo 'export PATH="$HOME/.bun/bin:$PATH"' >>"$HOME/.zprofile"
+# fi
+# echo "bun installation complete."
 
-npm install -g @openai/codex
+# echo "Installing rust"
 
-echo "Installing bun..."
-# Install bun
-curl -fsSL https://bun.sh/install | bash
-# Add bun to PATH for future sessions in .zprofile
-if ! grep -qxF 'export PATH="$HOME/.bun/bin:$PATH"' "$HOME/.zprofile"; then
-  echo '# Add bun to PATH' >> "$HOME/.zprofile"
-  echo 'export PATH="$HOME/.bun/bin:$PATH"' >> "$HOME/.zprofile"
-fi
-echo "bun installation complete."
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# echo "rust install complete."
+
+# echo "Installing rust-analyzer"
+# rustup component add rust-analyzer
+# echo "rust-analyzer install complete."
+
+# echo "Installing iStat Menus settings..."
+
+# TODO: Add this to the dotfiles
+# open -a "iStat Menus" ~/Library/Mobile\ Documents/com~apple~CloudDocs/Config/iStat\ Menus\ Settings.ismp7
+
+# echo "Installing iStat Menus settings complete."
 
 echo "🎉 Setup complete!"
 
-echo "Sourcing .zprofile to apply environment changes..."
-source "$HOME/.zprofile"
+echo "Sourcing fish to apply environment changes..."
+source "$HOME/.config/fish/config.fish"
