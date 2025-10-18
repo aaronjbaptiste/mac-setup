@@ -23,3 +23,10 @@ chmod +x setup.sh
 ## Post (optional)
 
 1. Log in to iCloud
+2. Generate SSH Key + Add public key to github
+3. Configure git author
+
+```
+git config --global user.email "<email>"
+git config --global user.name "<user_name>"
+```
