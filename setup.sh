@@ -72,6 +72,7 @@ echo "Installing apps with Homebrew..."
 
 brew install fish
 brew install defaultbrowser
+brew install yadm
 
 # brew install ripgrep
 # brew install defaultbrowser

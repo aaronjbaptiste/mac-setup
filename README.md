@@ -12,8 +12,8 @@ My setup.
 
 ```bash
 cd ~
-git clone https://github.com/gravityapple/dotfiles.git
-cd dotfiles
+git clone https://github.com/aaronjbaptiste/mac-setup.git
+cd mac-setup
 chmod +x setup.sh
 ./setup.sh
 ```
