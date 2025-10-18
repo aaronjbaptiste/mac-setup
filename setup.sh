@@ -2,7 +2,7 @@
 
 set -e
 
-echo "Setting macOS preferences..."
+echo "[Start] Setting macOS preferences"
 
 # Disable natural scrolling
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
@@ -24,25 +24,21 @@ defaults write -g NSWindowShouldDragOnGesture -bool true
 defaults write NSGlobalDomain com.apple.mouse.linear -bool YES
 
 # Disable shake mouse pointer to locate
-echo "Disabling shake mouse pointer to locate feature..."
 defaults write -g CGDisableCursorLocationMagnification -bool true
-echo "Shake mouse pointer to locate feature disabled."
 
 # Disable input source switching with fn key
-echo "Disabling input source switching with fn key..."
 defaults write com.apple.HIToolbox AppleFnUsageType -int 0
 killall SystemUIServer
-echo "Input source switching with fn key disabled."
 
-# Dock settings
-echo "Preferences set."
-echo "Clearing the Dock..."
+# Clear dock
 defaults write com.apple.dock persistent-apps -array ""
+# Auto hide dock
 defaults write com.apple.dock autohide -bool true
 killall Dock
-echo "Dock cleared."
 
-echo "Installing Homebrew..."
+echo "[Done] Setting macOS preferences"
+
+echo "[Start] Installing Homebrew"
 
 # Install Homebrew if not already installed
 if ! command -v brew &>/dev/null; then
@@ -55,7 +51,9 @@ else
   echo "Homebrew already installed, skipping..."
 fi
 
-echo "Installing apps with Homebrew Cask..."
+echo "[Done] Installing Homebrew"
+
+echo "[Start] Installing apps with Homebrew Cask"
 
 brew install --cask 1password
 brew install --cask zed
@@ -68,7 +66,9 @@ brew install --cask zen
 brew install --cask ghostty
 brew install --cask raycast
 
-echo "Installing apps with Homebrew..."
+echo "[Done] Installing apps with Homebrew Cask"
+
+echo "[Start] Installing apps with Homebrew"
 
 brew install fish
 brew install defaultbrowser
@@ -97,7 +97,9 @@ brew install yadm
 # brew tap FelixKratz/formulae
 # brew install borders
 
-echo "Setup dotfiles"
+echo "[Done] Installing apps with Homebrew"
+
+echo "[Start] Setup fish"
 
 # Add fish to list of known shells
 sudo bash -c 'echo $(which fish) >> /etc/shells'
@@ -110,6 +112,10 @@ chsh -s $(which fish)
 # # Install fisher plugins
 # fisher install jethrokuan/z
 
+echo "[Done] Setup fish"
+
+echo "[Start] Setup dotfiles"
+
 # Initialize and apply dotfiles with chezmoi
 # chezmoi init --apply aaronjbaptiste
 
@@ -118,11 +124,13 @@ chsh -s $(which fish)
 # git remote set-url origin aarongit:aaronjbaptiste/dotfiles.git
 # cd ~
 
-echo "Setting Zen as the default browser..."
-defaultbrowser zen
-echo "Default browser set to Zen."
+echo "[Done] Setup dotfiles"
 
-echo "All apps installed."
+echo "[Start] Setting Zen as the default browser"
+
+defaultbrowser zen
+
+echo "[Done] Setting Zen as the default browser"
 
 # npm install -g @openai/codex
 
@@ -152,7 +160,7 @@ echo "All apps installed."
 
 # echo "Installing iStat Menus settings complete."
 
-echo "🎉 Setup complete!"
-
 echo "Sourcing fish to apply environment changes..."
 source "$HOME/.config/fish/config.fish"
+
+echo "🎉 Setup complete!"
