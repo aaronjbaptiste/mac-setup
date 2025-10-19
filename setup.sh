@@ -73,29 +73,17 @@ echo "[Start] Installing apps with Homebrew"
 brew install fish
 brew install defaultbrowser
 brew install yadm
-
-# brew install ripgrep
-# brew install defaultbrowser
-# brew install chezmoi
-# brew install uv
-# brew install node
-# brew install cloudflared
-# brew install git-filter-repo
-# brew install stripe/stripe-cli/stripe
-# brew install treethis
-# brew install pip
-# brew install go
-# brew install git-lfs
-# brew install git
-# brew install tmux
-# brew install starship
-# brew install flyctl
-# brew install peco
-# brew install eza
-# brew install gh
-# brew install fd
-# brew tap FelixKratz/formulae
-# brew install borders
+brew install ripgrep
+brew install flyctl
+brew install peco
+brew install eza
+brew install gh
+brew install fd
+brew install bat
+brew install zellij
+brew install starship
+brew install xz
+brew install proto
 
 echo "[Done] Installing apps with Homebrew"
 
@@ -107,60 +95,48 @@ sudo bash -c 'echo $(which fish) >> /etc/shells'
 chsh -s $(which fish)
 
 # Install fisher
-# curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
-# # Install fisher plugins
-# fisher install jethrokuan/z
+# Install fisher plugins
+fisher install jethrokuan/z
+
+echo "Sourcing fish to apply environment changes..."
+
+source "$HOME/.config/fish/config.fish"
 
 echo "[Done] Setup fish"
 
 echo "[Start] Setup dotfiles"
 
-# Initialize and apply dotfiles with chezmoi
-# chezmoi init --apply aaronjbaptiste
-
-# Update chezmoi git remote URL
-# cd /Users/aaron/.local/share/chezmoi
-# git remote set-url origin aarongit:aaronjbaptiste/dotfiles.git
-# cd ~
+if [[ ! -d "$HOME/.local/share/yadm/repo.git" ]]; then
+  echo "Cloning dotfiles repo..."
+  yadm clone --bootstrap git@github.com:aaronjbaptiste/dotfiles.git
+else
+  echo "Dotfiles repo already exists. Pulling latest changes..."
+  yadm pull --rebase
+fi
 
 echo "[Done] Setup dotfiles"
+
+echo "[Start] Installing apps with proto"
+
+proto install node 24
+proto install bun
+proto install moon
+
+echo "[Done] Installing apps with proto"
+
+echo "[Start] Installing apps with npm"
+
+npm install -g @anthropic-ai/claude-code
+npm install -g @openai/codex
+
+echo "[Done] Installing apps with npm"
 
 echo "[Start] Setting Zen as the default browser"
 
 defaultbrowser zen
 
 echo "[Done] Setting Zen as the default browser"
-
-# npm install -g @openai/codex
-
-# echo "Installing bun..."
-# curl -fsSL https://bun.sh/install | bash
-# # Add bun to PATH for future sessions in .zprofile
-# if ! grep -qxF 'export PATH="$HOME/.bun/bin:$PATH"' "$HOME/.zprofile"; then
-#   echo '# Add bun to PATH' >>"$HOME/.zprofile"
-#   echo 'export PATH="$HOME/.bun/bin:$PATH"' >>"$HOME/.zprofile"
-# fi
-# echo "bun installation complete."
-
-# echo "Installing rust"
-
-# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# echo "rust install complete."
-
-# echo "Installing rust-analyzer"
-# rustup component add rust-analyzer
-# echo "rust-analyzer install complete."
-
-# echo "Installing iStat Menus settings..."
-
-# TODO: Add this to the dotfiles
-# open -a "iStat Menus" ~/Library/Mobile\ Documents/com~apple~CloudDocs/Config/iStat\ Menus\ Settings.ismp7
-
-# echo "Installing iStat Menus settings complete."
-
-echo "Sourcing fish to apply environment changes..."
-source "$HOME/.config/fish/config.fish"
 
 echo "🎉 Setup complete!"
