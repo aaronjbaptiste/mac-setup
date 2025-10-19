@@ -100,10 +100,6 @@ curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fi
 # Install fisher plugins
 fisher install jethrokuan/z
 
-echo "Sourcing fish to apply environment changes..."
-
-source "$HOME/.config/fish/config.fish"
-
 echo "[Done] Setup fish"
 
 echo "[Start] Setup dotfiles"
@@ -117,6 +113,12 @@ else
 fi
 
 echo "[Done] Setup dotfiles"
+
+echo "[Start] Sourcing fish to apply environment changes"
+
+source "$HOME/.config/fish/config.fish"
+
+echo "[Done] Sourcing fish to apply environment changes"
 
 echo "[Start] Installing apps with proto"
 
