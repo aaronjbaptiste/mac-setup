@@ -35,12 +35,6 @@ fi
 
 echo "[Done] Setup dotfiles"
 
-echo "[Start] Sourcing fish to apply environment changes"
-
-source "$HOME/.config/fish/config.fish"
-
-echo "[Done] Sourcing fish to apply environment changes"
-
 echo "[Start] Installing apps with proto"
 
 proto install node 24
